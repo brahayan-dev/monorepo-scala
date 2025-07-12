@@ -3,7 +3,7 @@ ThisBuild / organization := "akeptous"
 
 lazy val root = project
   .in(file("."))
-  .aggregate(apiRisktechBase, libDatabase, libServer, libSession)
+  .aggregate(apiRisktechBase, libServer, libSession, libStore)
 
 lazy val apiRisktechBase = project
   .in(file("api_risktech_base"))
@@ -12,11 +12,6 @@ lazy val apiRisktechBase = project
     name := "apiRisktechBase"
   )
 
-lazy val libDatabase = project
-  .in(file("lib_database"))
-  .settings(
-    name := "libDatabase"
-  )
 lazy val libServer = project
   .in(file("lib_server"))
   .settings(
@@ -26,4 +21,9 @@ lazy val libSession = project
   .in(file("lib_session"))
   .settings(
     name := "libSession"
+  )
+lazy val libStore = project
+  .in(file("lib_store"))
+  .settings(
+    name := "libStore"
   )

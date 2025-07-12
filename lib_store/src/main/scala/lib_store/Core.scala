@@ -1,3 +1,3 @@
-package lib_session
+package lib_store
 
 def run = println("Hello World!")
