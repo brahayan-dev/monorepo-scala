@@ -41,8 +41,8 @@ object Ghost:
     if low > high then None
     else
       val mid = (low + high) / 2
-      val current = records(mid)
-      current.id.compare(id) match
+      val record = records(mid)
+      record.id.compare(id) match
         case 0  => Some(mid)
         case 1  => binarySearch(records, id, low, mid - 1)
         case -1 => binarySearch(records, id, mid + 1, high)
