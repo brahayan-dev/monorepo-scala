@@ -57,45 +57,15 @@ class GhostSuite extends FunSuite:
       Ghost(storage).add(record).storage.records.getOrElse(record.id, defaultId)
     assertEquals(obtained, record)
 
-  // test("removeRecord from empty storage returns unchanged storage"):
-  //   val storage = Storage[String]("users", Map.empty)
-  //   val obtained = Ghost.removeRecord(UUID.randomUUID())(storage)
-  //   assertEquals(obtained, storage)
+  test("removeRecord from empty storage returns unchanged storage"):
+    val obtained = Ghost(storage).remove(defaultId).storage
+    assertEquals(obtained, storage)
 
-  // test("removeRecord with non-existing id returns unchanged storage"):
-  //   val id1 = UUID.randomUUID()
-  //   val record1 = Record(id1, Map("name" -> "Alice"))
-  //   val storage = Storage("users", Map(id1 -> record1))
-  //   val obtained = Ghost.removeRecord(UUID.randomUUID())(storage)
-  //   assertEquals(obtained, storage)
+  test("removeRecord with non-existing id returns unchanged storage"):
+    val obtained = Ghost(storage).add(record).remove(defaultId).storage
+    val expected = Ghost(storage).add(record).storage
+    assertEquals(obtained, expected)
 
-  // test("removeRecord with existing id removes the record"):
-  //   val id1 = UUID.randomUUID()
-  //   val id2 = UUID.randomUUID()
-  //   val record1 = Record(id1, Map("name" -> "Alice"))
-  //   val record2 = Record(id2, Map("name" -> "Bob"))
-  //   val storage = Storage("users", Map(id1 -> record1, id2 -> record2))
-  //   val obtained = Ghost.removeRecord(id1)(storage)
-  //   val expected = Storage("users", Map(id2 -> record2))
-  //   assertEquals(obtained, expected)
-
-  // // test("removeRecord from single record storage results in empty storage"):
-  // //   val id1 = UUID.randomUUID()
-  // //   val record1 = Record(id1, Map("name" -> "Alice"))
-  // //   val storage = Storage("users", Map(id1 -> record1))
-  // //   val obtained = Ghost.removeRecord(id1)(storage)
-  // //   val expected = Storage("users", Map.empty)
-  // //   assertEquals(obtained, expected)
-
-  // test("removeRecord from storage with multiple records"):
-  //   val id1 = UUID.randomUUID()
-  //   val id2 = UUID.randomUUID()
-  //   val id3 = UUID.randomUUID()
-  //   val record1 = Record(id1, Map("name" -> "Alice"))
-  //   val record2 = Record(id2, Map("name" -> "Bob"))
-  //   val record3 = Record(id3, Map("name" -> "Charlie"))
-  //   val storage =
-  //     Storage("users", Map(id1 -> record1, id2 -> record2, id3 -> record3))
-  //   val obtained = Ghost.removeRecord(id2)(storage)
-  //   val expected = Storage("users", Map(id1 -> record1, id3 -> record3))
-  //   assertEquals(obtained, expected)
+  test("removeRecord with existing id removes the record"):
+    val obtained = Ghost(storage).add(record).remove(record.id).storage
+    assertEquals(obtained, storage)
