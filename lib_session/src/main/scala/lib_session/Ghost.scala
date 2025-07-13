@@ -13,8 +13,8 @@ object Storage:
     Storage(name, Map.empty)
 
 case class Ghost[V](storage: Storage[V]):
-  def clear(): Storage[V] =
-    storage.copy(records = Map.empty)
+  def clear(): Ghost[V] =
+    Ghost(storage.copy(records = Map.empty))
 
   def add(record: Record[V]): Ghost[V] =
     val Storage(_, records) = storage
@@ -25,7 +25,3 @@ case class Ghost[V](storage: Storage[V]):
     val Storage(_, records) = storage
     if records.isEmpty then Ghost(storage)
     else Ghost(storage.copy(records = records - id))
-
-  def get(id: UUID): Option[Record[V]] =
-    val Storage(_, records) = storage
-    if records.isEmpty then None else records.get(id)

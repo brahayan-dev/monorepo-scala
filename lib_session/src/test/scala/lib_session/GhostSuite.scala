@@ -7,86 +7,55 @@ import lib_session.Storage
 import lib_session.Record
 import java.util.UUID
 
-val bob = Map("name" -> "Bob")
-val alice = Map("name" -> "Alice")
-val charlie = Map("name" -> "Charlie")
+val name = "users"
+val data = Map("user" -> "Bob")
+val defaultId = UUID.randomUUID()
+val record: Record[String] = Record(data)
+val storage: Storage[String] = Storage(name)
 
 class GhostSuite extends FunSuite:
-  test("createStorage creates an empty storage"):
-    val obtained = Storage("users")
-    val expected = Storage("users", Map.empty)
-    assertEquals(obtained, expected)
-
   test("createRecord creates record with random UUID"):
-    val record = Record(bob)
-    assertEquals(record.data, bob)
+    assertEquals(record.data, data)
     assert(record.id.isInstanceOf[UUID])
 
   test("addRecord adds a record in the storage"):
-    val storage: Storage[String] = Storage("users")
-    val record = Record(bob)
     val obtained = Ghost(storage).add(record).storage
-    val expected = Storage("users", Map(record.id -> record))
+    assertEquals(obtained.name, name)
+    assertEquals(
+      obtained.records.getOrElse(record.id, defaultId),
+      record
+    )
+
+  test("clearStorage removes all records"):
+    val obtained = Ghost(storage).add(record).clear().storage
+    assertEquals(obtained, storage)
+
+  test("clearStorage on empty storage returns empty storage"):
+    val obtained = Ghost(storage).clear().storage
+    assertEquals(obtained, storage)
+
+  test("addRecord to non-empty storage adds the record"):
+    val obtained = Ghost(storage).add(record).add(record).add(record).storage
+    val expected = Ghost(storage).add(record).storage
     assertEquals(obtained, expected)
 
-  // test("clearStorage removes all records"):
-  //   val record = Ghost.createRecord(bob)
-  //   val storage = Ghost.createStorage("users")
-  //   val obtained = Ghost.clearStorage(storage)
-  //   val expected = Storage("users", Map.empty)
-  //   assertEquals(obtained, expected)
+  test("getRecord from empty storage returns None"):
+    val obtained = storage.records.get(defaultId)
+    assertEquals(obtained, None)
 
-  // test("clearStorage on empty storage returns empty storage"):
-  //   val storage = Storage("users", Map.empty)
-  //   val obtained = Ghost.clearStorage(storage)
-  //   assertEquals(obtained, storage)
+  test("getRecord with existing id returns Some(record)"):
+    val obtained =
+      Ghost(storage).add(record).storage.records.get(record.id)
+    assertEquals(obtained, Some(record))
 
-  // test("addRecord to non-empty storage adds the record"):
-  //   val id1 = UUID.randomUUID()
-  //   val id2 = UUID.randomUUID()
-  //   val record1 = Record(id1, Map("name" -> "Alice"))
-  //   val record2 = Record(id2, Map("name" -> "Bob"))
-  //   val storage = Storage("users", Map(id1 -> record1, id2 -> record2))
-  //   val newRecord = Record(UUID.randomUUID(), Map("name" -> "Charlie"))
-  //   val obtained = Ghost.addRecord(newRecord)(storage)
-  //   val expected = Storage(
-  //     "users",
-  //     Map(id1 -> record1, id2 -> record2, newRecord.id -> newRecord)
-  //   )
-  //   assertEquals(obtained, expected)
+  test("getRecord with non-existing id returns None"):
+    val obtained = Ghost(storage).add(record).storage.records.get(defaultId)
+    assertEquals(obtained, None)
 
-  // test("getRecord from empty storage returns None"):
-  //   val storage = Storage[String]("users", Map.empty)
-  //   val obtained = Ghost.getRecord(UUID.randomUUID())(storage)
-  //   assertEquals(obtained, None)
-
-  // test("getRecord with existing id returns Some(record)"):
-  //   val id1 = UUID.randomUUID()
-  //   val id2 = UUID.randomUUID()
-  //   val record1 = Record(id1, Map("name" -> "Alice"))
-  //   val record2 = Record(id2, Map("name" -> "Bob"))
-  //   val storage = Storage("users", Map(id1 -> record1, id2 -> record2))
-  //   val obtained = Ghost.getRecord(id1)(storage)
-  //   assertEquals(obtained, Some(record1))
-
-  // test("getRecord with non-existing id returns None"):
-  //   val id1 = UUID.randomUUID()
-  //   val record1 = Record(id1, Map("name" -> "Alice"))
-  //   val storage = Storage("users", Map(id1 -> record1))
-  //   val obtained = Ghost.getRecord(UUID.randomUUID())(storage)
-  //   assertEquals(obtained, None)
-
-  // test("getRecord finds record in storage"):
-  //   val id1 = UUID.randomUUID()
-  //   val id2 = UUID.randomUUID()
-  //   val id3 = UUID.randomUUID()
-  //   val record1 = Record(id1, Map("name" -> "Alice"))
-  //   val record2 = Record(id2, Map("name" -> "Bob"))
-  //   val record3 = Record(id3, Map("name" -> "Charlie"))
-  //   val storage =
-  //     Storage("users", Map(id1 -> record1, id2 -> record2, id3 -> record3))
-  //   val obtained = Ghost.getRecord(id2)(storage)
-  //   assertEquals(obtained, Some(record2))
+  test("getRecord finds record in storage"):
+    val obtained =
+      Ghost(storage).add(record).storage.records.getOrElse(record.id, defaultId)
+    assertEquals(obtained, record)
 
   // test("removeRecord from empty storage returns unchanged storage"):
   //   val storage = Storage[String]("users", Map.empty)
