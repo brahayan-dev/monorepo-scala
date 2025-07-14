@@ -1,6 +1,5 @@
 package lib_session
 
-import munit.Clue.generate
 import munit.FunSuite
 import lib_session.Storage
 import lib_session.StorageRecord
