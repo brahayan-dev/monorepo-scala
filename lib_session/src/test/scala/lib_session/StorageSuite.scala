@@ -8,7 +8,7 @@ import java.util.UUID
 
 val name = "users"
 val data = Map("user" -> "Bob")
-val defaultId = UUID.randomUUID()
+val randomId = UUID.randomUUID()
 val record: StorageRecord[String] = StorageRecord(data)
 val storage: Storage[String] = Storage(name)
 
@@ -25,7 +25,7 @@ class StorageSuite extends FunSuite:
     val obtained = storage.add(record)
     assertEquals(obtained.name, name)
     assertEquals(
-      obtained.records.getOrElse(record.id, defaultId),
+      obtained.records.getOrElse(record.id, randomId),
       record
     )
 
@@ -47,7 +47,7 @@ class StorageSuite extends FunSuite:
   test(
     "Storage.records.get should return None when record ID does not exist in empty storage"
   ):
-    val obtained = storage.records.get(defaultId)
+    val obtained = storage.records.get(randomId)
     assertEquals(obtained, None)
 
   test(
@@ -60,7 +60,7 @@ class StorageSuite extends FunSuite:
   test(
     "Storage.records.get should return None when record ID does not exist in populated storage"
   ):
-    val obtained = storage.add(record).records.get(defaultId)
+    val obtained = storage.add(record).records.get(randomId)
     assertEquals(obtained, None)
 
   test(
@@ -70,19 +70,19 @@ class StorageSuite extends FunSuite:
       storage
         .add(record)
         .records
-        .getOrElse(record.id, defaultId)
+        .getOrElse(record.id, randomId)
     assertEquals(obtained, record)
 
   test(
     "Storage.remove should return unchanged storage when removing from empty storage"
   ):
-    val obtained = storage.remove(defaultId)
+    val obtained = storage.remove(randomId)
     assertEquals(obtained, storage)
 
   test(
     "Storage.remove should return unchanged storage when removing non-existing record ID"
   ):
-    val obtained = storage.add(record).remove(defaultId)
+    val obtained = storage.add(record).remove(randomId)
     val expected = storage.add(record)
     assertEquals(obtained, expected)
 
