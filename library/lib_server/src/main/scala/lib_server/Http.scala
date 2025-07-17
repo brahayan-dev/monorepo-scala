@@ -1,24 +1,16 @@
-package lib_server
+package akeptous.lib.server
 
-import cats.effect._
-import org.http4s._
-import org.http4s.dsl.io._
-import org.http4s.ember.server.EmberServerBuilder
-import org.http4s.server.Router
-import com.comcast.ip4s._
+import zio._
+import zio.http._
 
-object Http extends IOApp.Simple:
+object Http extends ZIOAppDefault:
+  val routes =
+    Routes(
+      Method.GET / Root -> handler(Response.text("Greetings at your service")),
+      Method.GET / "greet" -> handler { (req: Request) =>
+        val name = req.queryOrElse[String]("name", "World")
+        Response.text(s"Hello $name!")
+      }
+    )
 
-  val helloService = HttpRoutes.of[IO]:
-    case GET -> Root / "hello" / name => Ok(s"Hi, $name!")
-
-  val httpApp = Router("/" -> helloService).orNotFound
-
-  val run: IO[Unit] =
-    EmberServerBuilder
-      .default[IO]
-      .withHost(ipv4"127.0.0.1")
-      .withPort(port"8080")
-      .withHttpApp(httpApp)
-      .build
-      .useForever
+  def run = Server.serve(routes).provide(Server.defaultWithPort(1234))

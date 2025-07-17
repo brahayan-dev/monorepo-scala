@@ -4,7 +4,6 @@ ThisBuild / organization := "akeptous"
 val http4sVersion = "0.23.30"
 
 val commonDependencies = Seq(
-  "org.typelevel" %% "cats-core" % "2.13.0",
   "org.scalameta" %% "munit" % "1.1.1" % Test
 )
 
@@ -40,11 +39,7 @@ lazy val libServer = project
   .settings(
     name := "libServer",
     libraryDependencies ++= commonDependencies ++ Seq(
-      "org.http4s" %% "http4s-dsl" % http4sVersion,
-      "org.http4s" %% "http4s-ember-server" % http4sVersion,
-      "org.http4s" %% "http4s-circe" % http4sVersion,
-      "org.slf4j" %% "slf4j-simple" % "2.0.17",
-      "io.circe" %% "circe-generic" % "0.14.14"
+      "dev.zio" %% "zio-http" % "3.3.3"
     )
   )
 lazy val libSession = project

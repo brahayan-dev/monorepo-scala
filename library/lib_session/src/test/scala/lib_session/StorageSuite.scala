@@ -1,14 +1,14 @@
-package lib_session
+package akeptous.lib.session
 
 import munit.FunSuite
-import lib_session.Storage
-import lib_session.StorageRecord
+import akeptous.lib.session.Storage
+import akeptous.lib.session.Record
 import java.util.UUID
 
 val name = "users"
 val data = Map("user" -> "Bob")
 val randomId = UUID.randomUUID()
-val record: StorageRecord[String] = StorageRecord(data)
+val record: Record[String] = Record(data)
 val storage: Storage[String] = Storage(name)
 
 class StorageSuite extends FunSuite:
