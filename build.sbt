@@ -5,19 +5,8 @@ val commonDependencies = Seq(
   "org.scalameta" %% "munit" % "1.1.1" % Test
 )
 
-lazy val root = project
-  .in(file("."))
-  .aggregate(
-    apiRisktechBase,
-    bffRisktechBase,
-    libServer,
-    libSession,
-    libStore,
-    libUi
-  )
-
 lazy val apiRisktechBase = project
-  .in(file("backend/api_risktech_base"))
+  .in(file("backend/api-risktech-base"))
   .dependsOn(libServer, libSession)
   .settings(
     name := "apiRisktechBase",
@@ -25,7 +14,7 @@ lazy val apiRisktechBase = project
   )
 
 lazy val bffRisktechBase = project
-  .in(file("frontend/bff_risktech_base"))
+  .in(file("frontend/bff-risktech-base"))
   .dependsOn(libServer, libUi)
   .settings(
     name := "bffRisktechBase",
@@ -33,7 +22,7 @@ lazy val bffRisktechBase = project
   )
 
 lazy val libServer = project
-  .in(file("library/lib_server"))
+  .in(file("library/lib-server"))
   .settings(
     name := "libServer",
     libraryDependencies ++= commonDependencies ++ Seq(
@@ -41,19 +30,13 @@ lazy val libServer = project
     )
   )
 lazy val libSession = project
-  .in(file("library/lib_session"))
+  .in(file("library/lib-session"))
   .settings(
     name := "libSession",
     libraryDependencies ++= commonDependencies
   )
-lazy val libStore = project
-  .in(file("library/lib_store"))
-  .settings(
-    name := "libStore",
-    libraryDependencies ++= commonDependencies
-  )
 lazy val libUi = project
-  .in(file("library/lib_ui"))
+  .in(file("library/lib-ui"))
   .settings(
     name := "libUi",
     libraryDependencies ++= commonDependencies ++ Seq(

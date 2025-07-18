@@ -1,4 +1,4 @@
-package akeptous.lib.session
+package akeptous.lib.session.memory
 
 import java.util.UUID
 

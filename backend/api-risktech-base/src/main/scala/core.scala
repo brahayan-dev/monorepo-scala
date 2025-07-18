@@ -1,10 +1,10 @@
-package akeptous.api.risktech.base
+package akeptous.api.risktech.base.core
 
-import akeptous.lib.session.Storage
+import akeptous.lib.session.memory.Storage
 import akeptous.lib.server.http._
 
-object Core extends Api:
-  val storage = Storage("Hello from RickTech!")
+object Main extends Api:
+  val storage = Storage("Hello from RiskTech!")
   val routes =
     Routes(
       Method.GET / Root -> handler(Response.text(storage.name)),

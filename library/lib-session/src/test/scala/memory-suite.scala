@@ -1,8 +1,8 @@
-package akeptous.lib.session
+package akeptous.lib.session.memory.suite
 
 import munit.FunSuite
-import akeptous.lib.session.Storage
-import akeptous.lib.session.Record
+import akeptous.lib.session.memory.Storage
+import akeptous.lib.session.memory.Record
 import java.util.UUID
 
 val name = "users"
