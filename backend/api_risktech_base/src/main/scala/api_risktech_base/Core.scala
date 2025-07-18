@@ -1,12 +1,10 @@
 package akeptous.api.risktech.base
 
 import akeptous.lib.session.Storage
+import akeptous.lib.server.http._
 
-import zio._
-import zio.http._
-
-object Core extends ZIOAppDefault:
-  val storage = Storage("Hello from Storage!")
+object Core extends Api:
+  val storage = Storage("Hello from RickTech!")
   val routes =
     Routes(
       Method.GET / Root -> handler(Response.text(storage.name)),

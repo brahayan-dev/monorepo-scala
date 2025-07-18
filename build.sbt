@@ -1,8 +1,6 @@
 ThisBuild / scalaVersion := "3.3.6"
 ThisBuild / organization := "akeptous"
 
-val http4sVersion = "0.23.30"
-
 val commonDependencies = Seq(
   "org.scalameta" %% "munit" % "1.1.1" % Test
 )
