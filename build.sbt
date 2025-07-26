@@ -1,5 +1,5 @@
 ThisBuild / scalaVersion := "3.3.6"
-ThisBuild / organization := "akeptous"
+ThisBuild / organization := "example"
 
 val commonDependencies = Seq(
   "org.scalameta" %% "munit" % "1.1.1" % Test
